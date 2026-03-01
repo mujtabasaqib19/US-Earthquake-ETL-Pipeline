@@ -1,64 +1,81 @@
-# USGS Earthquake ETL Project
+# USGS Earthquake ETL Pipeline
 
-This repository hosts an end‑to‑end data engineering pipeline that pulls earthquake records from
-the USGS FDSN event API and prepares them for analysis. All code is in Python and can be run
-locally or containerized. The output feeds into interactive dashboards (Power BI / Tableau)
-—see the **Dashboard** section below for a preview.
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)
+![Postgres](https://img.shields.io/badge/Postgres-13%2B-lightgrey.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-The notebook `api-data.ipynb` documents the entire workflow and includes sample queries and
-transformations, making it easy to reproduce or extend the pipeline.
+A simple, reproducible ETL project that ingests real‑time earthquake data from the
+USGS FDSN web service, cleans and enriches it, validates quality, and loads the results
+into PostgreSQL or flat files. Ideal for analysts who want a ready‑made dataset for
+dashboards or machine‑learning experiments.
 
-## Overview
+## 🚀 Features
 
-- **Source API**: `https://earthquake.usgs.gov/fdsnws/event/1/query`
-- **Language**: Python 3
-- **Dependencies**: `pandas`, `requests`
+- **Extract** from USGS API with flexible time/magnitude filters
+- **Transform** raw GeoJSON to tidy `pandas` DataFrame
+- **Validate** data quality with automated checks and error logging
+- **Load** into Postgres with upsert/partition logic or export CSV
+- **Notebook** illustrates development steps & exploratory queries
+- **Configurable** via `.env` or environment variables for local/dev
 
-## Pipeline Components
+## 📁 Project Structure
 
-1. **Extract** – `src/etl_pipeline.py` contains `fetch_data` which calls the USGS API and
-   normalizes the JSON response into a pandas DataFrame.
-2. **Transform** – Basic cleaning in `transform_data`, e.g. removing entries without magnitude and
-   adding a `date` column.
-3. **Load** – `load_data` writes the DataFrame to a CSV file (can be extended to write parquet,
-   insert into a database, etc.).
+```
+api-data.ipynb             # exploratory notebook + documentation
+Dockerfile/compose.yml     # optional container setup
+requirements.txt           # Python dependencies
+README.md                  # this file
 
-## Usage
+# Python modules (if you refactor into packages)
+# (currently all logic lives in the notebook)
 
-```sh
-python -m pip install -r requirements.txt
-
-# run pipeline for the last 30 days with mag >= 4
-python src/etl_pipeline.py --start 2026-01-01 --end 2026-02-28 --minmag 4 --out data.csv
 ```
 
-The produced `data.csv` (or a database table if you configure Postgres) serves as the
-backing store for the interactive dashboard.
+## 📝 Quick Start
 
-The produced `data.csv` can be opened directly in Tableau/Power BI. Set up an extract or live connection
-using the CSV or load it into a data warehouse if desired.
+1. **Clone repository**
+   ```bash
+   git clone https://github.com/mujtabasaqib19/US-Earthquake-ETL-Pipeline.git
+   cd "US Earthquake ETL Pipeline"
+   ```
+2. **Create & activate virtualenv**
+   ```bash
+   python -m venv .venv
+   .\.venv\Scripts\activate      # Windows
+   # or: source .venv/bin/activate  # macOS/Linux
+   ```
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. **Configure database** (optional)
+   ```bash
+   copy .env.example .env
+   # edit PG_* variables for your Postgres instance
+   ```
+5. **Run ETL**
+   ```bash
+   python api-data.ipynb          # open notebook interactively
+   # or use `python -m notebook` to start Jupyter
+   ```
+   The notebook contains a `run_etl()` function; you can also call the functions directly.
 
-## Notebook
+6. **Examine output** in Postgres or look at generated CSV; open `api-data.ipynb` to review steps.
 
-`api-data.ipynb` shows an example of using the ETL functions interactively and plotting.
+## 📊 Dashboard Integration
 
-## Dashboard
+Once data is loaded into Postgres (or exported to CSV), you can connect Power BI /
+Tableau and build visualizations. A placeholder iframe is included below for embedding
+your final dashboard (update URL when available):
 
-Once the pipeline has produced or loaded data, you can create an interactive dashboard.
-Below is a placeholder for the Power BI dashboard; replace with your embedded report when available:
+<iframe title="USGS Earthquake Dashboard" width="800" height="600" src="YOUR_DASHBOARD_URL_HERE" frameborder="0" allowFullScreen></iframe>
 
-<iframe title="USGS Earthquake Dashboard" width="800" height="600" src="YOUR_DASHBOARD_URL_HERE" frameborder="0" allowFullScreen="true"></iframe>
+## 🛠 Extending the Pipeline
 
-The notebook also includes steps for exporting a `.pbix` file (see `us earthquake dashboard.pbix`).
-
-
-## Next Steps / Extensions
-
-- Schedule the script to run daily using Airflow/Prefect/cron.
-- Load data into a relational database or cloud storage (S3, BigQuery, etc.).
-- Add more elaborate transformations (e.g. geospatial bucketing, magnitude categorization).
-- Automate visualization by writing scripts that generate Tableau datasources or Power BI reports.
+- Schedule the notebook or functions via cron, Airflow, or a Python script
+- Add additional enrichments (e.g. distance to nearest city)
+- Write unit tests for each transform/validation step
+- Containerize using Docker (see `docker-compose.yml` for sample Postgres setup)
 
 ---
-
 *March 2026*
