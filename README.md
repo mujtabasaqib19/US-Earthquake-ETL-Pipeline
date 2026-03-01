@@ -9,6 +9,12 @@ USGS FDSN web service, cleans and enriches it, validates quality, and loads the 
 into PostgreSQL or flat files. Ideal for analysts who want a ready‑made dataset for
 dashboards or machine‑learning experiments.
 
+## 📊 Power BI Dashboard
+
+Interactive dashboard built on PostgreSQL data, highlighting earthquake distribution, magnitude trends, impact levels, and regional activity insights.
+
+![US Earthquake Dashboard](US-Earthquake-Dashboard.png)
+
 ## 🚀 Features
 
 - **Extract** from USGS API with flexible time/magnitude filters
@@ -61,14 +67,6 @@ README.md                  # this file
    The notebook contains a `run_etl()` function; you can also call the functions directly.
 
 6. **Examine output** in Postgres or look at generated CSV; open `api-data.ipynb` to review steps.
-
-## 📊 Dashboard Integration
-
-Once data is loaded into Postgres (or exported to CSV), you can connect Power BI /
-Tableau and build visualizations. A placeholder iframe is included below for embedding
-your final dashboard (update URL when available):
-
-![US Earthquake Dashboard](US-Earthquake-Dashboard.png)
 
 ## 🛠 Extending the Pipeline
 
