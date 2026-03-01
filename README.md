@@ -68,7 +68,7 @@ Once data is loaded into Postgres (or exported to CSV), you can connect Power BI
 Tableau and build visualizations. A placeholder iframe is included below for embedding
 your final dashboard (update URL when available):
 
-![US Earthquake Dashboard](US Earthquake Dashboard.png)
+![US Earthquake Dashboard](US-Earthquake-Dashboard.png)
 
 ## 🛠 Extending the Pipeline
 
